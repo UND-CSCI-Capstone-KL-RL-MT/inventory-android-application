@@ -1,3 +1,37 @@
+/**
+ * Barcode Scanning Application - Test Application
+ * ------------------------------------------------------
+ * The MainActivity class specifies our main activity. It
+ * contains the methods that specify the actions on the
+ * creation of the activity, as well as the method which
+ * creates an intent on the click of the scan button. In
+ * addition, the test application will show the result of
+ * the scan on return to the application after the intent
+ * is complete.
+ * -------------------------------------------------------
+ * Last updated: 11/30/2015
+ * -------------------------------------------------------
+ * Current to-do list:
+ * 1. Modify user interface to meet specifications and add
+ *    an aspect of user friendliness.
+ *
+ * 2. Create a navigation activity to allow ease of access
+ *    throughout application and provide structure.
+ *
+ * 3. Utilize the Android SDK HTTP class to create a class
+ *    that can be used to connect with our inventory API
+ *    and thus utilize data from it.
+ *
+ * 4. Utilize data retrieved from barcode scan to perform a
+ *    lookup in the database.
+ *
+ * 5. Add a login/logout system so that only authorized
+ *    users will have access to the application.
+ *
+ * 6. Add in error handling to determine what happens if
+ *    the item does not exist.
+ */
+
 package com.example.millner.barcodescanningapp;
 
 import android.os.Bundle;
