@@ -59,12 +59,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     private TextView formatTxt, contentTxt;
 
     public void onClick(View v){
-    //respond to clicks
-        if(v.getId()==R.id.scan_button){
-            //scan
-            IntentIntegrator scanIntegrator = new IntentIntegrator(this);
-            scanIntegrator.initiateScan();
-        }
+        //respond to clicks
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -88,10 +83,21 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        scanBtn = (Button)findViewById(R.id.scan_button);
         formatTxt = (TextView)findViewById(R.id.scan_format);
         contentTxt = (TextView)findViewById(R.id.scan_content);
-        scanBtn.setOnClickListener(this);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // use snackbar to let user know the barcode scan request was successful
+                Snackbar.make(view, "Opening barcode scanner...", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                // create new intent integrator
+                IntentIntegrator scanIntegrator = new IntentIntegrator((Activity)view.getContext());
+                // start the scan
+                scanIntegrator.initiateScan();
+            }
+        });
     }
 
     @Override
