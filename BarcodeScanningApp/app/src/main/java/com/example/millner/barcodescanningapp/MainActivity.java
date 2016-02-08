@@ -83,6 +83,9 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar mainToolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(mainToolbar);
+        getSupportActionBar().setTitle("Stox");
         formatTxt = (TextView)findViewById(R.id.scan_format);
         contentTxt = (TextView)findViewById(R.id.scan_content);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
