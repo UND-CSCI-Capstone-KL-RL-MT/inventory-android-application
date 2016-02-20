@@ -37,6 +37,8 @@ package com.example.millner.barcodescanningapp;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -83,24 +85,19 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar mainToolbar = (Toolbar)findViewById(R.id.toolbar);
-        setSupportActionBar(mainToolbar);
-        getSupportActionBar().setTitle("Stox");
-        formatTxt = (TextView)findViewById(R.id.scan_format);
-        contentTxt = (TextView)findViewById(R.id.scan_content);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // use snackbar to let user know the barcode scan request was successful
-                Snackbar.make(view, "Opening barcode scanner...", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                // create new intent integrator
-                IntentIntegrator scanIntegrator = new IntentIntegrator((Activity)view.getContext());
-                // start the scan
-                scanIntegrator.initiateScan();
-            }
-        });
+
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("!nvent");
+
+        // Get ViewPager and set the PagerAdapter
+        ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
+        viewPager.setAdapter(new PrimaryFragmentPagerAdapter(getSupportFragmentManager(), MainActivity.this));
+
+        // Give TabLayout to the ViewPager
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.nav_tabs);
+        tabLayout.setupWithViewPager(viewPager);
+
     }
 
     @Override

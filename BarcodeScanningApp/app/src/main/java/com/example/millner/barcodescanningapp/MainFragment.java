@@ -19,11 +19,11 @@ import com.google.zxing.integration.android.IntentIntegrator;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Main extends Fragment implements OnClickListener {
+public class MainFragment extends Fragment implements OnClickListener {
 
     private TextView formatTxt, contentTxt;
 
-    public Main() {
+    public MainFragment() {
         // Required empty public constructor
     }
 
