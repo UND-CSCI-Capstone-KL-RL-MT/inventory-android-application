@@ -102,15 +102,15 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
 
         // Get ViewPager and set the PagerAdapter
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
         viewPager.setAdapter(new PrimaryFragmentPagerAdapter(getSupportFragmentManager(), MainActivity.this));
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+                // Must invoke method, unused
             }
 
             @Override
@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
+                // Must invoke method, unused
             }
         });
 
