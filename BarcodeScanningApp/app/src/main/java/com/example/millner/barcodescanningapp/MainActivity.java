@@ -51,6 +51,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -88,7 +90,12 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("!nvent");
+        getSupportActionBar().setTitle("Inventory Manager");
+        getSupportActionBar().setElevation(0);
+
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
 
         // Get ViewPager and set the PagerAdapter
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
@@ -97,6 +104,22 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         // Give TabLayout to the ViewPager
         TabLayout tabLayout = (TabLayout) findViewById(R.id.nav_tabs);
         tabLayout.setupWithViewPager(viewPager);
+
+        // Bring FAB to front
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.bringToFront();
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // use snackbar to let user know the barcode scan request was successful
+                Snackbar.make(view, "Opening barcode scanner...", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                // create new intent integrator
+                // IntentIntegrator scanIntegrator = new IntentIntegrator((Activity) view.getContext());
+                // start the scan
+                // scanIntegrator.initiateScan();
+            }
+        });
 
     }
 

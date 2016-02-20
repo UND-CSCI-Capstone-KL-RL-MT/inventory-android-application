@@ -38,7 +38,7 @@ public class PageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_page, container, false);
         TextView textView = (TextView) view.findViewById(R.id.page_num);
-        textView.setText("Fragment #" + mPage);
+        textView.setText("Content Here (Page #" + mPage + ")");
         return view;
     }
 }
