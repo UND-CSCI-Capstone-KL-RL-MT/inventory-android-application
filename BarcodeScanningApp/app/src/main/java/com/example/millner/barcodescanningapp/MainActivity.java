@@ -107,6 +107,37 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         // Get ViewPager and set the PagerAdapter
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
         viewPager.setAdapter(new PrimaryFragmentPagerAdapter(getSupportFragmentManager(), MainActivity.this));
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                switch(position) {
+                    case 0:
+                        getSupportActionBar().setTitle("Inventory Manager");
+                        break;
+                    case 1:
+                        getSupportActionBar().setTitle("Add Item");
+                        break;
+                    case 2:
+                        getSupportActionBar().setTitle("Search Inventory");
+                        break;
+                    case 3:
+                        getSupportActionBar().setTitle("Settings");
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
         // Give TabLayout to the ViewPager
         TabLayout tabLayout = (TabLayout) findViewById(R.id.nav_tabs);

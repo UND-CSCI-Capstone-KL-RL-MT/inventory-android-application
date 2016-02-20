@@ -9,6 +9,8 @@ import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
+import android.util.Log;
+import android.view.ViewGroup;
 
 /**
  * Created by Ben on 2/20/2016.
@@ -35,9 +37,12 @@ public class PrimaryFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-
         return "";
+    }
 
+    @Override
+    public void finishUpdate(ViewGroup container) {
+        super.finishUpdate(container);
     }
 
 }
