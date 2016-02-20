@@ -88,6 +88,13 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        int[] navDrawables = {
+                R.drawable.ic_home,
+                R.drawable.ic_create_new,
+                R.drawable.ic_search,
+                R.drawable.ic_main_settings
+        };
+
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Inventory Manager");
@@ -104,6 +111,9 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         // Give TabLayout to the ViewPager
         TabLayout tabLayout = (TabLayout) findViewById(R.id.nav_tabs);
         tabLayout.setupWithViewPager(viewPager);
+        for (int i=0; i < tabLayout.getTabCount(); i++) {
+            tabLayout.getTabAt(i).setIcon(navDrawables[i]);
+        }
 
         // Bring FAB to front
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
