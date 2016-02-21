@@ -33,8 +33,19 @@ public class PrimaryFragmentPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
 
-        return PageFragment.newInstance(position + 1);
-        
+        switch (position) {
+            case 0:
+                return PageFragment.newInstance("Homepage fragment.");
+            case 1:
+                return PageFragment.newInstance("Add item fragment.");
+            case 2:
+                return PageFragment.newInstance("Search fragment.");
+            case 3:
+                return PageFragment.newInstance("Settings fragment.");
+            default:
+                return PageFragment.newInstance("Homepage fragment.");
+        }
+
     }
 
     @Override

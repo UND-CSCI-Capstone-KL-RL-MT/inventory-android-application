@@ -21,11 +21,11 @@ public class PageFragment extends Fragment {
 
     public static final String ARG_PAGE = "ARG_PAGE";
 
-    private int mPage;
+    private String mPageDesc;
 
-    public static PageFragment newInstance(int page) {
+    public static PageFragment newInstance(String pageDesc) {
         Bundle args = new Bundle();
-        args.putInt(ARG_PAGE, page);
+        args.putString(ARG_PAGE, pageDesc);
         PageFragment fragment = new PageFragment();
         fragment.setArguments(args);
         return fragment;
@@ -34,7 +34,7 @@ public class PageFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPage = getArguments().getInt(ARG_PAGE);
+        mPageDesc = getArguments().getString(ARG_PAGE);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class PageFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_page, container, false);
         ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
         TextView textView = (TextView) view.findViewById(R.id.page_num);
-        textView.setText("Content Here (Page #" + mPage + ")");
+        textView.setText(mPageDesc);
         return view;
     }
 }
