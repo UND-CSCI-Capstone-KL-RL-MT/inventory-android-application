@@ -54,6 +54,7 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -77,8 +78,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             String scanFormat = scanningResult.getFormatName();
             if (scanContent != null) {
                 viewPager.setCurrentItem(1);
-                Snackbar.make(findViewById(R.id.snackbarPosition), "Scan result: " + scanContent, Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                EditText barcodeField = (EditText) findViewById(R.id.input_barcode);
+                barcodeField.setText(scanContent);
             } else {
                 Snackbar.make(findViewById(R.id.snackbarPosition), "Scan failed. Please try again.", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();

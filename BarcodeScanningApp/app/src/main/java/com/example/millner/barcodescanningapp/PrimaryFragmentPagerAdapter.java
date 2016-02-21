@@ -37,7 +37,7 @@ public class PrimaryFragmentPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return PageFragment.newInstance("Homepage fragment.");
             case 1:
-                return PageFragment.newInstance("Add item fragment.");
+                return AddFragment.newInstance("Add item fragment.");
             case 2:
                 return PageFragment.newInstance("Search fragment.");
             case 3:

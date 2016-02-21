@@ -6,7 +6,6 @@
     android:padding="15dp"
     tools:context="com.example.millner.barcodescanningapp.PageFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:id="@+id/page_num"
         android:layout_width="match_parent"
