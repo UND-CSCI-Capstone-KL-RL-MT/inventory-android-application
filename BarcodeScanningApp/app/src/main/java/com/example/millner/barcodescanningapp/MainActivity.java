@@ -66,20 +66,26 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         //respond to clicks
     }
 
+    // On retrieval of our scan result, what we should do.
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-    //retrieve scan result
+        //retrieve scan result
         IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+        ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
         if (scanningResult != null) {
-        //we have a result
+            //we have a result
             String scanContent = scanningResult.getContents();
             String scanFormat = scanningResult.getFormatName();
-            Snackbar.make(findViewById(R.id.snackbarPosition), "Scan result: " + scanContent, Snackbar.LENGTH_LONG)
+            if (scanContent != null) {
+                viewPager.setCurrentItem(1);
+                Snackbar.make(findViewById(R.id.snackbarPosition), "Scan result: " + scanContent, Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            } else {
+                Snackbar.make(findViewById(R.id.snackbarPosition), "Scan failed. Please try again.", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        } else {
+            Snackbar.make(findViewById(R.id.snackbarPosition), "Scan failed. Please try again.", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
-        }
-        else{
-            Toast toast = Toast.makeText(getApplicationContext(),
-                    "No scan data received!", Toast.LENGTH_SHORT);
-            toast.show();
         }
     }
 
@@ -103,6 +109,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         // Get ViewPager and set the PagerAdapter
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
         viewPager.setAdapter(new PrimaryFragmentPagerAdapter(getSupportFragmentManager(), MainActivity.this));
+
+        // Add page change listener to listen for page change
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             @Override
@@ -110,6 +118,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 // Must invoke method, unused
             }
 
+            // Update the page title dependent on selected page
             @Override
             public void onPageSelected(int position) {
                 switch(position) {

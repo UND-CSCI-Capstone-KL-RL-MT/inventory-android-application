@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:padding="12dp"
+    android:padding="15dp"
     tools:context="com.example.millner.barcodescanningapp.PageFragment">
 
     <!-- TODO: Update blank fragment layout -->
