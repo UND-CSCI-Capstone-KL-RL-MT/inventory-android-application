@@ -73,8 +73,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         //we have a result
             String scanContent = scanningResult.getContents();
             String scanFormat = scanningResult.getFormatName();
-            formatTxt.setText("FORMAT: " + scanFormat);
-            contentTxt.setText("CONTENT: " + scanContent);
+            Snackbar.make(findViewById(R.id.snackbarPosition), "Scan result: " + scanContent, Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
         }
         else{
             Toast toast = Toast.makeText(getApplicationContext(),
@@ -99,9 +99,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Inventory Manager");
         getSupportActionBar().setElevation(0);
-
-        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
         // Get ViewPager and set the PagerAdapter
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
@@ -156,9 +153,9 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 Snackbar.make(view, "Opening barcode scanner...", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
                 // create new intent integrator
-                // IntentIntegrator scanIntegrator = new IntentIntegrator((Activity) view.getContext());
+                IntentIntegrator scanIntegrator = new IntentIntegrator((Activity) view.getContext());
                 // start the scan
-                // scanIntegrator.initiateScan();
+                scanIntegrator.initiateScan();
             }
         });
 
