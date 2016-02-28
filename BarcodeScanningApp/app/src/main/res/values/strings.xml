@@ -5,9 +5,13 @@
     <string name="description_input_label">Item Name</string>
     <string name="mtag_input_label">Item ID (M-tag)</string>
     <string name="room_num_input_label">Room Number</string>
+    <string name="demo_text">Demo Text</string>
 
     <string-array name="building_array">
         <item>Streibel Hall</item>
         <item>Odegard Hall</item>
     </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

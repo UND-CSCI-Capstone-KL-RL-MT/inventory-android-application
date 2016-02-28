@@ -104,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        assert getSupportActionBar() != null;
         getSupportActionBar().setTitle("Inventory Manager");
         getSupportActionBar().setElevation(0);
 

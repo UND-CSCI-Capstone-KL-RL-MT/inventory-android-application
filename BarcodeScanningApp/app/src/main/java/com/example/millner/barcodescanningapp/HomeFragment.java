@@ -8,36 +8,33 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 
 /**
  * The controller class for the HomeFragment which displays on the
  * homepage of the application.
  */
-public class AddFragment extends Fragment {
+public class HomeFragment extends Fragment {
 
-    public static AddFragment newInstance(String pageDesc) {
+    public static HomeFragment newInstance(String pageDesc) { // allow for creation of new instance
         Bundle args = new Bundle();
-        AddFragment fragment = new AddFragment();
+        HomeFragment fragment = new HomeFragment();
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) { // required override
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_add, container, false);
-        Spinner buildingSpinner = (Spinner) view.findViewById(R.id.building_spinner);
-        ArrayAdapter<CharSequence> buildingAdapter = ArrayAdapter.createFromResource(this.getContext(), R.array.building_array, R.layout.spinner_item);
-        buildingAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        buildingSpinner.setAdapter(buildingAdapter);
-
+        View view = inflater.inflate(R.layout.fragment_home, container, false); // reference fragment_home layout
+        TextView homeText = (TextView) view.findViewById(R.id.home_text); // retrieve text view from layout
+        homeText.setText("Home fragment."); // set text of view
         return view;
     }
 

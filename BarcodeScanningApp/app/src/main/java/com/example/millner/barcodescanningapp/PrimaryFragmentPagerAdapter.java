@@ -35,15 +35,15 @@ public class PrimaryFragmentPagerAdapter extends FragmentPagerAdapter {
 
         switch (position) {
             case 0:
-                return PageFragment.newInstance("Homepage fragment.");
+                return HomeFragment.newInstance("Homepage fragment.");
             case 1:
                 return AddFragment.newInstance("Add item fragment.");
             case 2:
-                return PageFragment.newInstance("Search fragment.");
+                return SearchFragment.newInstance("Search fragment.");
             case 3:
-                return PageFragment.newInstance("Settings fragment.");
+                return SettingsFragment.newInstance("Settings fragment.");
             default:
-                return PageFragment.newInstance("Homepage fragment.");
+                return HomeFragment.newInstance("Homepage fragment.");
         }
 
     }
