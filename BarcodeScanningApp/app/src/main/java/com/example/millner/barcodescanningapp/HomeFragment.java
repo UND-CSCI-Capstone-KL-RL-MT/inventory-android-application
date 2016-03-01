@@ -35,6 +35,12 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false); // reference fragment_home layout
         TextView homeText = (TextView) view.findViewById(R.id.home_text); // retrieve text view from layout
         homeText.setText("Home fragment."); // set text of view
+
+        if (savedInstanceState == null) {
+            getFragmentManager().beginTransaction()
+                    .add(R.id.container, new InventoryListFragment())
+                    .commit();
+        }
         return view;
     }
 
