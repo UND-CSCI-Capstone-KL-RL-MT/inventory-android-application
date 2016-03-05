@@ -6,6 +6,8 @@
     <string name="mtag_input_label">Item ID (M-tag)</string>
     <string name="room_num_input_label">Room Number</string>
     <string name="demo_text">Demo Text</string>
+    <string name="add_card_title">Add an item.</string>
+    <string name="add_card_subtitle">Use the form below to add a new item.</string>
 
     <string-array name="building_array">
         <item>Streibel Hall</item>
