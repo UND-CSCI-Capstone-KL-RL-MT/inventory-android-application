@@ -42,7 +42,9 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Menu;
@@ -62,10 +64,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity implements OnClickListener {
 
     private Button scanBtn;
     private TextView formatTxt, contentTxt;
+    ArrayList<String> results;
 
     public void onClick(View v){
         //respond to clicks
@@ -74,23 +79,44 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     // On retrieval of our scan result, what we should do.
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         //retrieve scan result
-        IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-        ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
-        if (scanningResult != null) {
-            //we have a result
-            String scanContent = scanningResult.getContents();
-            String scanFormat = scanningResult.getFormatName();
-            if (scanContent != null) {
-                viewPager.setCurrentItem(1);
-                EditText barcodeField = (EditText) findViewById(R.id.input_barcode);
-                barcodeField.setText(scanContent);
+        SwitchCompat batchSwitch = (SwitchCompat) findViewById(R.id.batch_switch);
+        Log.v("Batch_Mode", "Batch scanner switch set to: " + batchSwitch.isChecked());
+        if (batchSwitch.isChecked()) {
+            Log.v("Batch_Mode", "Request code is 0: " + (requestCode == 0) + " (request code = " + requestCode + "), Result code OK: " + (resultCode == RESULT_OK));
+            if (resultCode == RESULT_OK) {
+                String contents = intent.getStringExtra("SCAN_RESULT");
+                String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
+                results.add(contents);
+
+                Log.d("Batch_Mode", "We're in batch mode.");
+                // create new intent integrator
+                IntentIntegrator scanIntegrator = new IntentIntegrator((Activity) findViewById(R.id.snackbarPosition).getContext());
+                // start the scan
+                scanIntegrator.initiateScan();
+            } else if (resultCode == RESULT_CANCELED) {
+                Log.v("Batch_Mode_Result", results.toString());
+                Snackbar.make(findViewById(R.id.snackbarPosition), "Batch scan completed.", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        } else {
+            IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+            ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
+            if (scanningResult != null) {
+                //we have a result
+                String scanContent = scanningResult.getContents();
+                String scanFormat = scanningResult.getFormatName();
+                if (scanContent != null) {
+                    viewPager.setCurrentItem(1);
+                    EditText barcodeField = (EditText) findViewById(R.id.input_barcode);
+                    barcodeField.setText(scanContent);
+                } else {
+                    Snackbar.make(findViewById(R.id.snackbarPosition), "Scan failed. Please try again.", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
             } else {
                 Snackbar.make(findViewById(R.id.snackbarPosition), "Scan failed. Please try again.", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
-        } else {
-            Snackbar.make(findViewById(R.id.snackbarPosition), "Scan failed. Please try again.", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
         }
     }
 
@@ -98,6 +124,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        results = new ArrayList<String>();
 
         int[] navDrawables = {
                 R.drawable.ic_home,

@@ -2,21 +2,27 @@ package com.example.millner.barcodescanningapp;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.LinearInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -38,7 +44,9 @@ import java.util.ArrayList;
  * The controller class for the HomeFragment which displays on the
  * homepage of the application.
  */
-public class AddFragment extends Fragment {
+public class AddFragment extends Fragment implements CompoundButton.OnCheckedChangeListener {
+
+    public static boolean batchModeEnabled = false;
 
     public static AddFragment newInstance(String pageDesc) {
         Bundle args = new Bundle();
@@ -70,32 +78,61 @@ public class AddFragment extends Fragment {
             }
         });
 
+        SwitchCompat batchSwitch = (SwitchCompat) view.findViewById(R.id.batch_switch);
+        batchSwitch.setOnCheckedChangeListener(this);
+
         Button saveButton = (Button) view.findViewById(R.id.save_button);
         saveButton.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-                View rootView = v.getRootView();
-                EditText itemName = (EditText) v.getRootView().findViewById(R.id.input_name);
-                EditText itemBarcode = (EditText) v.getRootView().findViewById(R.id.input_barcode);
-                EditText itemRoom = (EditText) v.getRootView().findViewById(R.id.input_room_num);
-                Spinner itemBuilding = (Spinner) v.getRootView().findViewById(R.id.building_spinner);
-                ArrayList<String> params = new ArrayList<String>();
-                params.add(itemBarcode.getText().toString());
-                params.add(itemName.getText().toString());
-                params.add(itemBuilding.getSelectedItem().toString());
-                params.add(itemRoom.getText().toString());
-                ConnectivityManager connMgr = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-                NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-                if (networkInfo != null && networkInfo.isConnected()) {
-                    new SaveItemTask().execute(params);
-                    clearAllFields(rootView);
+                if (batchModeEnabled) {
+
                 } else {
-                    Snackbar.make(rootView.findViewById(R.id.snackbarPosition), "Save failed: No internet connection.", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
+                    View rootView = v.getRootView();
+                    EditText itemName = (EditText) v.getRootView().findViewById(R.id.input_name);
+                    EditText itemBarcode = (EditText) v.getRootView().findViewById(R.id.input_barcode);
+                    EditText itemRoom = (EditText) v.getRootView().findViewById(R.id.input_room_num);
+                    Spinner itemBuilding = (Spinner) v.getRootView().findViewById(R.id.building_spinner);
+                    ArrayList<String> params = new ArrayList<String>();
+                    params.add(itemBarcode.getText().toString());
+                    params.add(itemName.getText().toString());
+                    params.add(itemBuilding.getSelectedItem().toString());
+                    params.add(itemRoom.getText().toString());
+                    ConnectivityManager connMgr = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+                    NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+                    if (networkInfo != null && networkInfo.isConnected()) {
+                        new SaveItemTask().execute(params);
+                        clearAllFields(rootView);
+                    } else {
+                        Snackbar.make(rootView.findViewById(R.id.snackbarPosition), "Save failed: No internet connection.", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                    }
                 }
             }
         });
 
         return view;
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        View rootView = getView().getRootView();
+        Button saveButton = (Button) rootView.findViewById(R.id.save_button);
+        FloatingActionButton scanButton = (FloatingActionButton) rootView.findViewById(R.id.fab);
+        EditText itemBarcode = (EditText) rootView.findViewById(R.id.input_barcode);
+        if (isChecked) {
+            // if checked, hide the scan button and barcode field
+            batchModeEnabled = true;
+            CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) scanButton.getLayoutParams();
+            // scanButton.animate().translationY(scanButton.getHeight() + layoutParams.bottomMargin).setInterpolator(new LinearInterpolator()).start();
+            itemBarcode.setVisibility(View.GONE);
+            saveButton.setVisibility(View.GONE);
+        } else {
+            batchModeEnabled = false;
+            CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) scanButton.getLayoutParams();
+            // scanButton.animate().translationY(0).setInterpolator(new LinearInterpolator()).start();
+            itemBarcode.setVisibility(View.VISIBLE);
+            saveButton.setVisibility(View.VISIBLE);
+        }
     }
 
     public Boolean clearAllFields(View mainView) {
