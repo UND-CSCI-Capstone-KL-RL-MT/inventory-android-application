@@ -9,7 +9,7 @@ import android.widget.TextView;
 import org.w3c.dom.Text;
 
 /**
- * Created by Adam on 4/4/2016.
+ * RecyclerView Adapter used to populate our RecyclerView on the HomeFragment
  */
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
