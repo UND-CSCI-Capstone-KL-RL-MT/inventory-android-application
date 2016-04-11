@@ -85,9 +85,9 @@ public class HomeFragment extends Fragment {
         FetchInventoryTask inventoryTask = new FetchInventoryTask();
         inventoryTask.execute();
 
-        mRecyclerView.setHasFixedSize(true);
-        mAdapter = new RecyclerViewAdapter(data);
-        mRecyclerView.setAdapter(mAdapter);
+        //mRecyclerView.setHasFixedSize(true);
+        //mAdapter = new RecyclerViewAdapter(data);
+        //mRecyclerView.setAdapter(mAdapter);
 
         return view;
     } // End of OnCreateView
@@ -106,15 +106,17 @@ public class HomeFragment extends Fragment {
             final String ITEM_BUILDING_INV_API = "item_building";
             final String ITEM_LOCATION_INV_API = "item_location";
 
-            JSONObject inventoryJson = new JSONObject(inventoryJsonStr);
-            JSONArray inventoryArray = new JSONArray(inventoryJson);
+            JSONArray inventoryArray = new JSONArray(inventoryJsonStr);
 
-            String[] resultStrs = new String[99];
+            String id;
+            String description;
+            String building;
+            int location;
+            String[] resultStrs = new String[inventoryArray.length()];
+            //List<String> resultStrs = new ArrayList<String>(Arrays.asList(data));
+
             for (int i = 0; i < inventoryArray.length(); i++) {
-                String id;
-                String description;
-                String building;
-                String location;
+
 
                 // Get the JSON object representing the day
                 JSONObject inventoryObject = inventoryArray.getJSONObject(i);
@@ -122,7 +124,7 @@ public class HomeFragment extends Fragment {
                 id = inventoryObject.getString(ITEM_ID_INV_API);
                 description = inventoryObject.getString(ITEM_DESCRIPTION_INV_API);
                 building = inventoryObject.getString(ITEM_BUILDING_INV_API);
-                location = inventoryObject.getString(ITEM_LOCATION_INV_API);
+                location = inventoryObject.getInt(ITEM_LOCATION_INV_API);
 
                 resultStrs[i] = id + " - " + description + " - " + building + " - " + location;
             }
@@ -202,7 +204,7 @@ public class HomeFragment extends Fragment {
         } // End of doInBackground
 
         @Override
-        protected void onPostExecute (String[] result) {
+        protected void onPostExecute(String[] result) {
             if (result != null) {
                 mAdapter = new RecyclerViewAdapter(result);
                 mRecyclerView.setAdapter(mAdapter);
