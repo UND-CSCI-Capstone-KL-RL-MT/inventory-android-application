@@ -47,47 +47,26 @@ public class HomeFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    // Updates the list when switching back to the HomeFragment Tab
+    @Override
+    public void onResume() {
+        super.onResume();
+        FetchInventoryTask inventoryTask = new FetchInventoryTask();
+        inventoryTask.execute();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false); // reference fragment_home layout
-        TextView homeText = (TextView) view.findViewById(R.id.home_text); // retrieve text view from layout
-        // homeText.setText("Home fragment."); // set text of view
-
 
         // RecyclerView
         mRecyclerView = (RecyclerView) view.findViewById(R.id.home_fragment_recycler_view);
         mRecyclerView.setHasFixedSize(true);
-
         LinearLayoutManager llm = new LinearLayoutManager(getActivity().getApplicationContext());
         mRecyclerView.setLayoutManager(llm);
-
-        // Dummy Data
-        // Creating dummy data for fragment_home
-        String[] data = {
-                "Dell Optiplex - M123123 - Streibel 108",
-                "Apple iMac - M987987 - Streibel 106",
-                "Samsung Galaxy Note 5 - M112233 - Streibel 230",
-                "Apple iPhone 10 - M999999 - Streibel 10",
-                "Samsung LED Monitor - M555666 - Campus Place 304",
-                "Dell Optiplex - M123123 - Streibel 108",
-                "Apple iMac - M987987 - Streibel 106",
-                "Samsung Galaxy Note 5 - M112233 - Streibel 230",
-                "Apple iPhone 10 - M999999 - Streibel 10",
-                "Samsung LED Monitor - M555666 - Campus Place 304",
-                "Dell Optiplex - M123123 - Streibel 108",
-                "Apple iMac - M987987 - Streibel 106",
-                "Samsung Galaxy Note 5 - M112233 - Streibel 230",
-                "Apple iPhone 10 - M999999 - Streibel 10",
-                "Samsung LED Monitor - M555666 - Campus Place 304"
-        };
-        //List<String> dummyInventory = new ArrayList<String>(Arrays.asList(data));
         FetchInventoryTask inventoryTask = new FetchInventoryTask();
         inventoryTask.execute();
-
-        //mRecyclerView.setHasFixedSize(true);
-        //mAdapter = new RecyclerViewAdapter(data);
-        //mRecyclerView.setAdapter(mAdapter);
 
         return view;
     } // End of OnCreateView
