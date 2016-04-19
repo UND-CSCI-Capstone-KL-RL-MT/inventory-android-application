@@ -4,6 +4,7 @@ package com.example.millner.barcodescanningapp;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -57,13 +58,17 @@ public class HomeFragment extends Fragment {
 
         // RecyclerView
         mRecyclerView = (RecyclerView) view.findViewById(R.id.home_fragment_recycler_view);
-
         mAdapter = new RecyclerViewAdapter(inventoryItemList);
         RecyclerView.LayoutManager mLayoutmanager = new LinearLayoutManager(getActivity().getApplicationContext());
         mRecyclerView.setLayoutManager(mLayoutmanager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this.getContext(),LinearLayoutManager.VERTICAL));
 
 
+        // Clear list initially
+        inventoryItemList.clear();
+        
+        // Populate the RecyclerView with items
         FetchInventoryTask inventoryTask = new FetchInventoryTask();
         inventoryTask.execute();
 
@@ -85,12 +90,6 @@ public class HomeFragment extends Fragment {
             final String ITEM_LOCATION_INV_API = "item_location";
 
             JSONArray inventoryArray = new JSONArray(inventoryJsonStr);
-
-            String id;
-            String description;
-            String building;
-            int location;
-            String[] resultStrs = new String[inventoryArray.length()];
 
             for (int i = 0; i < inventoryArray.length(); i++) {
                 // Get the JSON object representing the day

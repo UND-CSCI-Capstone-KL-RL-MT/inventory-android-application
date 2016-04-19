@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Interpolator;
 import android.widget.TextView;
 
 import java.util.List;
@@ -45,7 +46,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.description.setText(item.getDescription());
         holder.tag.setText(item.getTag());
         holder.building.setText(item.getBuilding());
-        //holder.roomNumber.setText(item.getRoomNumber());
+        holder.roomNumber.setText(Integer.toString(item.getRoomNumber()));
 
     }
     @Override
