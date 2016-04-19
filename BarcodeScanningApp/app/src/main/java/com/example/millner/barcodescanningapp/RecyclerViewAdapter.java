@@ -4,54 +4,53 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Interpolator;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
+import java.util.List;
 
 /**
- * Created by Adam on 4/4/2016.
+ * RecyclerView Adapter used to populate our RecyclerView on the HomeFragment
  */
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
-    private String[] mDataset;
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
+    private List <InventoryItem> inventoryItemList;
 
-    // Provide a reference to the views fro each data item
-    // Complex data items may need more than one view per item, and
-    // You provide access to all the views for a data item in a view holder
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView mTextView;
-        public ViewHolder (TextView v) {
-            super(v);
-            mTextView = v;
+    public class MyViewHolder extends RecyclerView.ViewHolder {
+        public TextView description, tag, building, roomNumber;
+
+        public MyViewHolder (View view) {
+            super(view);
+            description = (TextView) view.findViewById(R.id.description);
+            tag = (TextView) view.findViewById(R.id.tag);
+            building = (TextView) view.findViewById(R.id.building);
+            roomNumber = (TextView) view.findViewById(R.id.room_number);
         }
     }
 
-    // Provide a suitable constructor
-    public RecyclerViewAdapter (String[] myDataset) {
-        mDataset = myDataset;
+    public RecyclerViewAdapter (List<InventoryItem> inventoryItemList) {
+        this.inventoryItemList = inventoryItemList;
     }
 
-    // Create new views (invoked by the layout manager)
     @Override
-    public RecyclerViewAdapter.ViewHolder onCreateViewHolder (ViewGroup parent,
-                                                              int viewType) {
-        // create a new view
-        View v = LayoutInflater.from(parent.getContext())
+    public MyViewHolder onCreateViewHolder (ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_inventory, parent, false);
-        ViewHolder vh = new ViewHolder((TextView) v);
-        return vh;
+
+        return new MyViewHolder(itemView);
     }
 
     @Override
-    public void  onBindViewHolder (ViewHolder holder, int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
-        holder.mTextView.setText(mDataset[position]);
-    }
+    public void onBindViewHolder (MyViewHolder holder, int position) {
+        InventoryItem item = inventoryItemList.get(position);
+        holder.description.setText(item.getDescription());
+        holder.tag.setText(item.getTag());
+        holder.building.setText(item.getBuilding());
+        holder.roomNumber.setText(Integer.toString(item.getRoomNumber()));
 
-    // Return the size of your dataset (invoked by the layout manager)
+    }
     @Override
     public int getItemCount() {
-        return mDataset.length;
+        return inventoryItemList.size();
     }
 }
