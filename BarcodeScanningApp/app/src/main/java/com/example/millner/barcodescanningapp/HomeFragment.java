@@ -4,6 +4,7 @@ package com.example.millner.barcodescanningapp;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -34,6 +35,7 @@ import java.util.List;
 public class HomeFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
+    private List<InventoryItem> inventoryItemList = new ArrayList<>();
 
     public static HomeFragment newInstance(String pageDesc) { // allows for creation of new instance
         Bundle args = new Bundle();
@@ -47,13 +49,6 @@ public class HomeFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    // Updates the list when switching back to the HomeFragment Tab
-    @Override
-    public void onResume() {
-        super.onResume();
-        FetchInventoryTask inventoryTask = new FetchInventoryTask();
-        inventoryTask.execute();
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -62,9 +57,13 @@ public class HomeFragment extends Fragment {
 
         // RecyclerView
         mRecyclerView = (RecyclerView) view.findViewById(R.id.home_fragment_recycler_view);
-        mRecyclerView.setHasFixedSize(true);
-        LinearLayoutManager llm = new LinearLayoutManager(getActivity().getApplicationContext());
-        mRecyclerView.setLayoutManager(llm);
+
+        mAdapter = new RecyclerViewAdapter(inventoryItemList);
+        RecyclerView.LayoutManager mLayoutmanager = new LinearLayoutManager(getActivity().getApplicationContext());
+        mRecyclerView.setLayoutManager(mLayoutmanager);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+
         FetchInventoryTask inventoryTask = new FetchInventoryTask();
         inventoryTask.execute();
 
@@ -73,11 +72,11 @@ public class HomeFragment extends Fragment {
 
     // Used for calling API for inventory items
     // To be displayed in the RecyclerView
-    public class FetchInventoryTask extends AsyncTask<String, Void, String[]> {
+    public class FetchInventoryTask extends AsyncTask<String, Void, List<InventoryItem>> {
 
         private final String LOG_TAG = FetchInventoryTask.class.getSimpleName();
 
-        private String[] getInventoryDataFromJson(String inventoryJsonStr) throws JSONException {
+        private List<InventoryItem> getInventoryDataFromJson(String inventoryJsonStr) throws JSONException {
 
             // These are the names of JSON objects that need to be extracted.
             final String ITEM_ID_INV_API = "item_id";
@@ -92,29 +91,26 @@ public class HomeFragment extends Fragment {
             String building;
             int location;
             String[] resultStrs = new String[inventoryArray.length()];
-            //List<String> resultStrs = new ArrayList<String>(Arrays.asList(data));
 
             for (int i = 0; i < inventoryArray.length(); i++) {
-
-
                 // Get the JSON object representing the day
                 JSONObject inventoryObject = inventoryArray.getJSONObject(i);
+                InventoryItem inventoryItem = new InventoryItem();
 
-                id = inventoryObject.getString(ITEM_ID_INV_API);
-                description = inventoryObject.getString(ITEM_DESCRIPTION_INV_API);
-                building = inventoryObject.getString(ITEM_BUILDING_INV_API);
-                location = inventoryObject.getInt(ITEM_LOCATION_INV_API);
 
-                resultStrs[i] = id + " - " + description + " - " + building + " - " + location;
+                inventoryItem.setDescription(inventoryObject.getString(ITEM_DESCRIPTION_INV_API));
+                inventoryItem.setBuilding(inventoryObject.getString(ITEM_BUILDING_INV_API));
+                inventoryItem.setRoomNumber(inventoryObject.getInt(ITEM_LOCATION_INV_API));
+                inventoryItem.setTag(inventoryObject.getString(ITEM_ID_INV_API));
+
+                inventoryItemList.add(inventoryItem);
+
             }
 
-            for (String s : resultStrs) {
-                Log.v(LOG_TAG, "Inventory entry: " + s);
-            }
-            return resultStrs;
+            return inventoryItemList;
         }
 
-        protected String[] doInBackground(String... params) {
+        protected List<InventoryItem> doInBackground(String... params) {
             // Declaring these outside of try catch block so that they may be closed
             // in the finally block
             HttpURLConnection urlConnection = null;
@@ -183,9 +179,9 @@ public class HomeFragment extends Fragment {
         } // End of doInBackground
 
         @Override
-        protected void onPostExecute(String[] result) {
-            if (result != null) {
-                mAdapter = new RecyclerViewAdapter(result);
+        protected void onPostExecute(List<InventoryItem> inventoryItemList) {
+            if (inventoryItemList != null) {
+                mAdapter = new RecyclerViewAdapter(inventoryItemList);
                 mRecyclerView.setAdapter(mAdapter);
             }
         }
