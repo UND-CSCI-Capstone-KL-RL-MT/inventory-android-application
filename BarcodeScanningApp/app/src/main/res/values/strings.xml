@@ -9,6 +9,15 @@
     <string name="add_card_title">Add an item.</string>
     <string name="add_card_subtitle">Use the form below to add a new item.</string>
 
+    <!-- Search Fragment Strings -->
+    <string name="search_item_title">Search for an item</string>
+    <string name="search_card_subtitle">Use the form below to search for an item</string>
+    <string name="search_description_input_label">Search for an item</string>
+    <string name="search_tag_radio_button_hint">Tag</string>
+    <string name="search_description_radio_button_hint">Description</string>
+    <string name="search_room_radio_button_hint">Room</string>
+    <string name="search_all_radio_button_hint">All</string>
+
     <string-array name="building_array">
         <item>Streibel Hall</item>
         <item>Odegard Hall</item>
