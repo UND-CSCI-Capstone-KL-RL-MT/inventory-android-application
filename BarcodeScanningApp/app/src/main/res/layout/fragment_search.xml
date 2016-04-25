@@ -24,6 +24,14 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/search_item_title"
+                android:fontFamily="sans-serif-light"
+                android:textSize="24sp"
+                android:textColor="@color/colorPrimary" />
+
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_name"
                 android:layout_width="match_parent"
