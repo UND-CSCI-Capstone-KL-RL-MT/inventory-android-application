@@ -3,6 +3,7 @@ package com.example.millner.barcodescanningapp;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +31,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,9 +60,16 @@ public class SearchFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_search, container, false); // reference fragment_search layout
+        final View view = inflater.inflate(R.layout.fragment_search, container, false); // reference fragment_search layout
 
         final EditText editText = (EditText) view.findViewById(R.id.search_fragment_input_name);
+        final Spinner spinner = (Spinner) view.findViewById(R.id.search_building_spinner);
+        final RadioGroup radioGroup = (RadioGroup) view.findViewById(R.id.search_radio_group);
+
+
+        RadioButton rb = (RadioButton) view.findViewById(R.id.all_radio_button);
+        rb.setChecked(true);
+
 
         // Add buildings to spinner
         Spinner buildingSpinner = (Spinner) view.findViewById(R.id.search_building_spinner);
@@ -72,15 +83,32 @@ public class SearchFragment extends Fragment {
         RecyclerView.LayoutManager mLayoutmanager = new LinearLayoutManager(getActivity().getApplicationContext());
         mRecyclerView.setLayoutManager(mLayoutmanager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        //mRecyclerView.addItemDecoration(new DividerItemDecoration(this.getContext(),LinearLayoutManager.VERTICAL));
 
         // Set the onClickListener for the search button
         Button searchButton = (Button) view.findViewById(R.id.search_button);
         searchButton.setOnClickListener(new Button.OnClickListener() {
-            public void onClick (View v) {
+            public void onClick(View v) {
+                int radioButtonID = radioGroup.getCheckedRadioButtonId();
+                String selectedRadioButton;
+                switch (radioButtonID) {
+                    case R.id.all_radio_button:
+                        selectedRadioButton = "All";
+                        break;
+                    case R.id.tag_radio_button:
+                        selectedRadioButton = "Id";
+                        break;
+                    case R.id.description_radio_button:
+                        selectedRadioButton = "Description";
+                        break;
+                    case R.id.room_radio_button:
+                        selectedRadioButton = "Room";
+                        break;
+                    default:
+                        selectedRadioButton = "All";
+                    }
                 inventoryItemList.clear();
                 SearchInventoryTask inventoryTask = new SearchInventoryTask();
-                inventoryTask.execute(editText.getText().toString());
+                inventoryTask.execute(selectedRadioButton,editText.getText().toString(), spinner.getSelectedItem().toString());
             }
         });
 
@@ -131,8 +159,13 @@ public class SearchFragment extends Fragment {
             try {
                 // Construct the URL for the inventory-api
                 //http://people.cs.und.edu/~balman/inventory-api/get_items.php?filter=
+                String building = params[2];
+                building.replace(" ", "%20");
 
-                URL url = new URL("http://people.cs.und.edu/~balman/inventory-api/get_items.php?filter=" + params[0]);
+                URL url = new URL("http://people.cs.und.edu/~balman/inventory-api/get_items.php?filter=" + params[0] +"&query=" + params[1] + "&building=" + URLEncoder.encode(building,"UTF-8"));
+                //URL url = new URL("http://people.cs.und.edu/~balman/inventory-api/get_items.php?filter=" + params[0] +"&query=" + params[1]);
+
+                Log.v(LOG_TAG, "URL = " + url);
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
                 urlConnection.connect();

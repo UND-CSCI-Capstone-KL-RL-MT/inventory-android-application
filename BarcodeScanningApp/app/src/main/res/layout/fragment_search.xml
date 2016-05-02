@@ -65,6 +65,7 @@
                     android:orientation="horizontal">
 
                     <RadioGroup
+                        android:id="@+id/search_radio_group"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
