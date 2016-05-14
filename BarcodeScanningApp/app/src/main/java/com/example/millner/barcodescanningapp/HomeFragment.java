@@ -37,6 +37,10 @@ import java.util.List;
 /**
  * The controller class for the HomeFragment which displays on the
  * homepage of the application.
+ *
+ * Home fragment has a RecyclerView that is populated with InventoryItems's
+ * The goal is for this to be a user log.
+ * Right now it just pulls all items from the database.
  */
 public class HomeFragment extends Fragment {
     private RecyclerView mRecyclerView;
@@ -116,7 +120,7 @@ public class HomeFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutmanager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        // Click Listener
+        // Click Listener for each item placed in the RecyclerView for HomeFragment
         mRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity().getApplicationContext(), mRecyclerView, new ClickListener() {
             @Override
             public void onClick(View view, int position) {
@@ -161,7 +165,7 @@ public class HomeFragment extends Fragment {
                 JSONObject inventoryObject = inventoryArray.getJSONObject(i);
                 InventoryItem inventoryItem = new InventoryItem();
 
-
+                // Assigning values to inventory item fields
                 inventoryItem.setDescription(inventoryObject.getString(ITEM_DESCRIPTION_INV_API));
                 inventoryItem.setBuilding(inventoryObject.getString(ITEM_BUILDING_INV_API));
                 inventoryItem.setRoomNumber(inventoryObject.getInt(ITEM_LOCATION_INV_API));

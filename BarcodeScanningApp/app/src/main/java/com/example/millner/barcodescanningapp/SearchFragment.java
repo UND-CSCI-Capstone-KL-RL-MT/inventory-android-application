@@ -39,6 +39,8 @@ import java.util.List;
 /**
  * The controller class for the SearchFragment which displays on the
  * search page of the application.
+ *
+ * SearchFragment allows users to search database by building, tag number, description, and room number
  */
 public class SearchFragment extends Fragment {
     private RecyclerView mRecyclerView;
